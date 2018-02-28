@@ -1,0 +1,115 @@
+{% load staticfiles %}
+<!DOCTYPE html> 
+<html>
+<link rel="stylesheet" type="text/css" href="{% static 'login/w3.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'board/board_style.css' %}" />
+<script language="javascript">
+    function boardlist()
+    {
+        var s = "{{searchStr}}";
+        
+        if(s=="None")
+            location.href = '/board';
+        else
+            location.href = '/board';
+    }       
+    
+    function boardmodify() 
+    {
+         location.href='../ModifyRow?memo_id={{memo_id}}&searchStr={{searchStr}}';
+    }
+       
+    function boarddelete() 
+    {
+        location.href='../DeleteSpecificRow?memo_id={{memo_id}}';        
+    }
+	function writereply() 
+    {
+		var form = document.replyform;
+    	if (!form.reply_text.value) {
+        	alert("내용을 적어주세요");
+        	form.reply_text.focus();
+        	return;
+    	}
+    	form.submit(); 
+    }  
+   
+</script>
+
+<body>
+<div class="w3-container" style="height:50px;"></div>	
+<div class="w3-display-container w3-opacity-min" id="home">
+  <div class="w3-display-middle" style="white-space:nowrap;">
+    <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity">Project Online Board</span>
+  </div>
+</div>
+<div class="w3-container" style="height:100px;"></div>
+<table class="w3-table-all">
+	<tr class="w3-teal">
+		<td width=150>작성자</td>
+		<td width=400>제목</td>
+		<td width=50>조회수</td>
+	</tr>
+	<tr class="w3-white">
+		<td>{{ boardData.name }}</td>
+		<td> {{ boardData.subject }} </td>
+		<td> {{ boardData.hits }} </td>
+	</tr>
+</table>
+<table class="w3-table-all w3-padding">	
+	<tr>
+		<td class="w3-padding-large"> {{ boardData.memo|linebreaks }} </td>
+	</tr>		
+</table>
+
+<table cellspacing=1 class="w3-table ">
+    <tr class="w3-border">
+		<th width=15%>작성자</th>
+        <th width=55%>댓글</th>
+        <th width=120>등록일</th>
+		<th width=5%></th>
+    </tr>
+    {% if replyList %}
+        <ul>
+            {% for replyRow in replyList %}
+            <tr>
+			<td width=5>{{ replyRow.name }}</td>
+            <td width=120>{{ replyRow.reply_text }}</td>
+            <td width=120>{{ replyRow.pub_date }}</td>
+			{% if user.username == replyRow.name %}
+				<td width=1><a href="../DeleteReply?reply_id={{replyRow.id}}&memo_id={{memo_id}}&searchStr={{searchStr}}"><img src="{% static 'board/delete.png' %}" alt="삭제"></a></td>
+			{% endif %}
+            </tr>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>댓글이 없습니다.</p>
+    {% endif %}
+</table>
+<div class="w3-container" style="height:20px;"></div>
+<table  cellspacing = 0 cellpadding = 0 border = 0 class="w3-margin w3-red">
+    <tr><td>
+		
+    </td></tr>
+</table>
+{% if user.is_authenticated %}
+{% csrf_token %}
+<form name=replyform method=post action="../DoWriteReply/?memo_id={{memo_id}}&searchStr={{searchStr}}">
+<input type='text' name='reply_text' maxlength=200 class="w3-input w3-border w3-half w3-margin">
+<input type=button value="댓글달기" OnClick="javascript:writereply()" class="w3-button w3-red w3-margin">
+{% if user.username == boardData.name %}
+<input type=button value="삭제" OnClick="javascript:boarddelete()" class="w3-button w3-red w3-margin-top w3-margin-right w3-right">{% csrf_token %}
+<input type=button value="수정" OnClick="javascript:boardmodify()" class="w3-button w3-teal w3-margin-top w3-margin-right w3-right">        
+{% endif %}
+<input type=button value="목록" OnClick="javascript:boardlist()" class="w3-button w3-black w3-margin-top w3-margin-right w3-right">
+</form>
+{% endif %}
+
+<footer class="w3-center w3-black w3-padding-64 w3-opacity w3-hover-opacity-off">
+  <div class="w3-small w3-section">
+	  <p>Project Online Board</p>
+    <p>made by JG</p>
+  </div>
+</footer>
+</body>
+</html>

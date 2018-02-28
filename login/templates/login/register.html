@@ -1,0 +1,35 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<title>Project Online Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'login/w3.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'login/form_style.css' %}" />
+<script type="text/javascript" src="{% static 'login/jquery-1.7.1.min.js' %}"></script>
+<script>
+	$(document).ready(function(){
+    $('.back').click(function() {
+		location.replace('/');
+    });
+});
+		
+</script>
+<body>
+	<div class="w3-contatiner login_form center">
+<form method="POST" action="{% url 'register' %}">
+  {% csrf_token %}
+  <p class="form-p"> Project Online Register </p>
+	  {{ form.as_p }}
+	<button type='submit' class="w3-button">Register</button>
+	
+</form>
+	<button class="w3-button back">Back</button>
+	</div>
+
+</body>
+</html>
+
+	
+ 	
+

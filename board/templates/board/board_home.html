@@ -1,0 +1,97 @@
+{% load staticfiles %}
+<!DOCTYPE html> 
+<html>
+<title>Project Online</title>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="{% static 'login/w3.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'board/board_style.css' %}" />
+<script type="text/javascript" src="{% static 'login/jquery-1.7.1.min.js' %}"></script>
+<script>
+</script>
+<body>
+<div class="w3-container" style="height:50px;"></div>	
+<div class="w3-display-container w3-opacity-min" id="home">
+  <div class="w3-display-middle" style="white-space:nowrap;">
+    <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity">Project Online Board</span>
+  </div>
+</div>
+<div class="w3-container" style="height:100px;"></div>
+	
+
+
+
+<table class="w3-table">
+    <tr>
+	<form name=searchf method=post action=""> 
+        <td><input type=text name=searchStr maxlength=50 class="w3-input w3-border" placeholder="아직 검색은 지원되지 않습니다."></td>
+		<td width=50><input type=submit value="검색" class="w3-button w3-black"></td>
+	</form>
+		{% if user.is_authenticated %}
+        <td width=50><input type=button value="글쓰기"  OnClick="window.location='writeBoard'" class="w3-button w3-red w3-right">    </td>
+		{% endif %}
+    </tr>	
+</table>
+<table cellspacing=1 class="w3-table-all">
+    <tr>
+        <td>총 게시물수: {{ totalCnt }}</td>
+        </td>
+    </tr>
+</table>
+<table cellspacing=1 border=1 class="w3-table-all">
+    <tr class="w3-teal">
+		<th width=320>제목</th>
+		<th width=15%>작성자</th>
+        <th width=16%>등록일</th>
+        <th width=7%>조회수</th>
+    </tr>
+
+    {% if boardList %}
+        <ul>
+            {% for boardRow in boardList %}
+            <tr>
+            
+            <td width=320>
+				<a href="viewWork?memo_id={{ boardRow.id }}&searchStr=None" class="remove_bottom_line">{{ boardRow.subject }}
+				{% if boardRow.secret_board %}
+				<img src="{% static 'board/lock.png' %}" style="height:24px;">
+				{% endif %}
+            </td>
+			<td width=100>{{ boardRow.name }}</td>
+            <td width=200>{{ boardRow.created_date }}</td>
+            <td width=100>{{ boardRow.hits }}</td>
+            </tr>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No Data.</p>
+    {% endif %}
+</table>
+<table class="w3-table w3-margin-top">
+    <tr>
+        <td class="w3-center">        
+        {% for page in totalPageList %}
+            <a href="page_move?current_page={{page}}" class="remove_bottom_line">
+            [
+            {% ifequal page current_page %}
+                <b>
+            {% endifequal %}
+            {{page}}
+                       
+            {% ifequal page current_page  %}
+                </b>
+            {% endifequal %}            
+            ]               
+        {% endfor %}                 
+        </td>
+    </tr>
+</table>
+
+<footer class="w3-center w3-black w3-padding-64 w3-opacity w3-hover-opacity-off">
+  <div class="w3-small w3-section">
+	  <p>Project Online Board</p>
+    <p>made by JG</p>
+  </div>
+</footer>
+
+</body>
+</html>

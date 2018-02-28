@@ -1,0 +1,40 @@
+.login_form {
+	border: 1px;
+	border-radius: 8px;
+	border-style: solid;
+	padding: 40px;	
+	margin: 30px;
+}
+
+.input_form {
+	margin-bottom: 20px;
+}
+
+.form_p {
+	margin: 20px;
+	color: red;
+}
+
+
+.project_img {
+	background-image: url(project_img.jpg);
+}
+
+.cool-link {
+    display: inline-block;
+    color: #000;
+    text-decoration: none;
+}
+
+.cool-link::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #000;
+    transition: width .3s;
+}
+
+.cool-link:hover::after {
+    width: 100%;
+}

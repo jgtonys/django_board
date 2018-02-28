@@ -1,0 +1,84 @@
+{% load staticfiles %}
+<html>
+<head>
+<title>글수정</title>
+<link rel="stylesheet" type="text/css" href="{% static 'login/w3.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'board/board_style.css' %}" />
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+</head>
+  
+<script language="javascript">
+	function writeCheck() 
+	{				
+	    var form = document.modifyform;
+	
+	    if( !form.subject.value )
+	    {
+	        alert( "제목을 적어주세요" );
+	        form.subject.focus();
+	        return;
+	    }
+	    if( !form.memo.value )
+	    {
+	        alert( "내용을 적어주세요" );
+	        form.memo.focus();
+	        return;
+	    }
+	
+	    
+	    form.submit();
+	}
+	
+	function boardlist()
+	{
+	    var s = "{{searchStr}}";
+        
+        if(s=="None")
+            location.href = '/board';
+        else
+            location.href = '/board';	    
+	}
+   
+</script>
+
+<form name=modifyform method=post action="../updateBoard/"> {% csrf_token %}    
+    <input type=hidden name=memo_id  value="{{memo_id}}">    
+    <input type=hidden name=searchStr  value="{{searchStr}} ">	
+	<table class="w3-table-all">	
+	<tr class="w3-teal">
+		<td>숨겨진 제목(선택)</td>
+	</tr>
+	<tr class="w3-white">
+		<td><input type='text' name='mail' maxlength=50 class="w3-input w3-border" value="{{ boardData.mail }}"></td>
+	</tr>
+	<tr class="w3-teal">
+		<td>제목</td>
+	</tr>
+	<tr class="w3-white">
+		<td><input type='text' name='subject' maxlength=50 class="w3-input w3-border" value="{{ boardData.subject }}"></td>
+	</tr>
+	</table>
+	<table class="W3-table-all">
+	<tr>
+		<td width=8%>비밀글</td>
+		<td>비밀번호</td>
+	</tr>
+	<tr>
+		<td><input type='radio' name='secret_board' class="w3-input"></td>
+		<td><input type='text' name='pass' maxlength=10 class="w3-input w3-border"></td>
+	</tr>
+</table>
+<div class="w3-container w3-margin-top" style="height:500px;">
+	<textarea name='memo' style="width:100%; height:100%;">{{ boardData.memo }}</textarea>
+</div>
+</form>
+ 
+<table  cellspacing = 0 cellpadding = 0 border = 0 width=500>
+    <tr><td>
+        <input type=button value="재등록" OnClick="javascript:writeCheck();" class="w3-button w3-red w3-margin-left w3-margin-top">
+        <input type=button value="목록" OnClick="javascript:boardlist()" class="w3-button w3-black w3-margin-top">       
+    </td></tr>
+</table>
+
+
+</html>

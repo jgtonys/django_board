@@ -1,0 +1,40 @@
+{% load staticfiles %}
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'login/w3.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'board/board_style.css' %}" />
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>비밀번호</title>
+</head>
+<script>
+function passCheck() {
+    var form = document.passform;
+    form.submit();
+}
+function cancel(){location.href = '/board';}
+</script>
+<div class="w3-container" style="height:50px;"></div>	
+<div class="w3-display-container w3-opacity-min" id="home">
+  <div class="w3-display-middle" style="white-space:nowrap;">
+    <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity">Project Online Board</span>
+  </div>
+</div>
+<div class="w3-container" style="height:100px;"></div>
+{% if msg %}
+	{{msg}}
+{% endif %}
+<form name=passform method=post action="../passCheck/?memo_id={{memo_id}}">{% csrf_token %}
+<table class="w3-table-all">	
+	<tr class="w3-teal">
+		<td>비밀번호</td>
+	</tr>
+	<tr class="w3-white">
+		<td><input type='text' name='pass' maxlength=50 class="w3-input w3-border"></td>
+	</tr>
+</table>
+</form>
+<input type=button value="확인" OnClick="javascript:passCheck();" class="w3-button w3-margin-left w3-margin-top w3-red">
+<input type=button value="취소" OnClick="javascript:cancel();" class="w3-button w3-margin-top w3-black">
+
+</td></tr>
+</table>

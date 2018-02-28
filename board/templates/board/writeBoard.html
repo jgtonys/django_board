@@ -1,0 +1,81 @@
+{% load staticfiles %}
+<script language="javascript">
+function writeCheck() {
+    var form = document.writeform;
+    if (!form.subject.value) {
+        alert("제목을 적어주세요");
+        form.subject.focus();
+        return;
+    }
+    if (!form.memo.value) {
+        alert("내용을 적어주세요");
+        form.memo.focus();
+        return;
+    }               
+    form.submit();    
+}
+function cancel(){location.href = '/board';}
+</script>
+
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'login/w3.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'board/board_style.css' %}" />
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>게시판 글쓰기</title>
+</head>
+{% if user.is_authenticated %}
+<div class="w3-container" style="height:50px;"></div>	
+<div class="w3-display-container w3-opacity-min" id="home">
+  <div class="w3-display-middle" style="white-space:nowrap;">
+    <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity">Project Online Board</span>
+  </div>
+</div>
+<div class="w3-container" style="height:100px;"></div>
+	
+<form name=writeform method=post action="../DoWriteBoard/">{% csrf_token %}
+<table class="w3-table-all">	
+	<tr class="w3-teal">
+		<td>숨겨진 제목(선택)</td>
+	</tr>
+	<tr class="w3-white">
+		<td><input type='text' name='email' maxlength=50 class="w3-input w3-border"></td>
+	</tr>
+	<tr class="w3-teal">
+		<td>제목</td>
+	</tr>
+	<tr class="w3-white">
+		<td><input type='text' name='subject' maxlength=50 class="w3-input w3-border"></td>
+	</tr>
+	</table>
+	<table class="W3-table-all">
+	<tr>
+		<td width=8%>비밀글</td>
+		<td>비밀번호</td>
+	</tr>
+	<tr>
+		<td><input type='radio' name='secret_board' class="w3-input"></td>
+		<td><input type='text' name='pass' maxlength=10 class="w3-input w3-border"></td>
+	</tr>
+</table>
+<div class="w3-container w3-margin-top" style="height:500px;">
+	<textarea name='memo' style="width:100%; height:100%;"></textarea>
+</div>
+</form>
+
+<input type=button value="등록" OnClick="javascript:writeCheck();" class="w3-button w3-margin-top w3-margin-left w3-red">
+<input type=button value="취소" OnClick="javascript:cancel();" class="w3-button w3-margin-top w3-black">
+
+</td></tr>
+</table>
+<div class="w3-container" style="height:50px;"></div>
+<footer class="w3-center w3-black w3-padding-64 w3-opacity w3-hover-opacity-off">
+  <div class="w3-small w3-section">
+	  <p>Project Online Board</p>
+    <p>made by JG</p>
+  </div>
+</footer>
+{% else %}
+<h1>감히 로그인도 안하고 URL을 타고 들어와서 글을 쓸려고 해?</h1>
+<p> 너 뭔가 꿀리는게 있구나?</p>
+{% endif %}
